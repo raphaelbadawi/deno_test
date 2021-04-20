@@ -1,6 +1,12 @@
 import { v4 } from "https://deno.land/std/uuid/mod.ts";
 import { Product } from "../types.ts";
+import { Client } from "https://deno.land/x/postgres/mod.ts";
+import config from "../config.ts";
 
+// Init client
+const client = new Client(config);
+
+// TODO: Get rid of it once database seeded
 let products: Product[] = [
   {
     id: "1",
