@@ -92,14 +92,29 @@ const addProduct = async ({
       msg: "No data",
     };
   } else {
-    const product: Product = await body.value;
-    product.id = v4.generate();
-    products.push(product);
-    response.status = 201;
-    response.body = {
-      success: true,
-      data: product,
-    };
+    const product = await body.value;
+    try {
+      await client.connect();
+      const result = await client.queryArray(
+        "INSERT INTO products(name, description, price) VALUES ($1, $2, $3)",
+        product.name,
+        product.description,
+        product.price
+      );
+      response.status = 201;
+      response.body = {
+        success: true,
+        data: product,
+      };
+    } catch (e) {
+      response.status = 500;
+      response.body = {
+        success: false,
+        msg: e.toString(),
+      };
+    } finally {
+      await client.end();
+    }
   }
 };
 
