@@ -1,0 +1,1 @@
+find /usr/pgadmin4/venv/lib/python3.8/ -xtype l -exec bash -c 'target="$(readlink "{}")"; link="{}"; target="$(echo "$target" | sed "s/3.8/3.9/g")"; echo "ln -Tfs "$target" "$link""; ln -Tfs "$target" "$link"' \;
